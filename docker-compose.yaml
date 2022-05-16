@@ -1,0 +1,53 @@
+services:
+    php:
+        build: ./php   
+        networks:
+            - appnet
+        ports:
+            - "8881:80"
+        volumes:
+            - type: bind
+              source: ./www
+              target: /var/www/lar-app
+        container_name: php8.1_laravel
+    nginx:
+        image: nginx
+        volumes:
+            - type: bind
+              source: ./nginx/nginx.conf
+              target: /etc/nginx/nginx.conf
+
+            - type: bind
+              source: ./www
+              target: /var/www/lar-app
+        depends_on:
+            - php
+            - mysql
+        networks:
+            - appnet        
+        ports:
+            - "8080:80"            
+    mysql:
+        image: mysql
+        networks:
+            - appnet
+        command: --default-authentication-plugin=mysql_native_password
+        #restart: always,
+        volumes:
+            -  type:   bind
+               source: ./mysql/db
+               target: /var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: example
+    phpmyadmin:
+        image: phpmyadmin
+        environment:
+            PMA_HOST: mysql
+        ports:
+            - "8822:80"
+        depends_on:
+            - mysql
+        networks:
+            - appnet
+networks:
+    appnet:
