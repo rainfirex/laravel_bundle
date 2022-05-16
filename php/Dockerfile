@@ -41,6 +41,7 @@ RUN composer create-project laravel/laravel lar-app
 
 
 COPY ./entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
 # message
 #CMD composer --version && php --v
