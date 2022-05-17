@@ -21,6 +21,7 @@
         </style>
     </head>
     <body class="antialiased">
+        <h2> User agent info </h2>
         <p>Ваш ip: {{ $ip }}</p>
         <p>User agent: {{ $data2 }}</p>
         <?= var_dump($data1);?>
